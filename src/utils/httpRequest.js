@@ -72,5 +72,6 @@ http.adornData = (data = {}, openDefultdata = true, contentType = 'json') => {
   data = openDefultdata ? merge(defaults, data) : data
   return contentType === 'json' ? JSON.stringify(data) : qs.stringify(data)
 }
+ 
 
 export default http

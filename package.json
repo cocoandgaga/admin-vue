@@ -1,8 +1,8 @@
 {
   "name": "renren-fast-vue",
   "version": "1.2.2",
-  "description": "renren-fast-vue基于vue、element-ui构建开发，实现renren-fast后台管理前端功能，提供一套更优的前端解决方案。",
-  "author": "daxiong.yang <daxiong.yang@qq.com>",
+  "description": "基于vue、element-ui构建开发，实现后台管理前端功能，提供一套更优的前端解决方案。",
+  "author": "zxj <zxj@qq.com>",
   "private": true,
   "scripts": {
     "dev": "webpack-dev-server --inline --progress --config build/webpack.dev.conf.js",
@@ -14,6 +14,7 @@
     "build": "gulp"
   },
   "dependencies": {
+    "ant-design-vue": "^1.7.4",
     "axios": "0.17.1",
     "babel-plugin-component": "0.10.1",
     "babel-polyfill": "6.26.0",
@@ -23,7 +24,11 @@
     "gulp-load-plugins": "2.0.5",
     "gulp-replace": "1.0.0",
     "gulp-shell": "0.8.0",
+    "jquery": "^3.6.0",
     "lodash": "4.17.5",
+    "marked": "^2.0.1",
+    "mavon-editor": "^2.9.1",
+    "moment": "^2.29.1",
     "node-sass": "4.13.1",
     "npm": "^6.9.0",
     "sass-loader": "6.0.6",
@@ -31,6 +36,7 @@
     "vue": "2.5.16",
     "vue-cookie": "1.1.4",
     "vue-router": "3.0.1",
+    "vuedraggable": "^2.24.3",
     "vuex": "3.0.1"
   },
   "devDependencies": {

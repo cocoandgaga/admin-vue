@@ -18,7 +18,32 @@ const _import = require('./import-' + process.env.NODE_ENV)
 // 全局路由(无需嵌套上左右整体布局)
 const globalRoutes = [
   { path: '/404', component: _import('common/404'), name: '404', meta: { title: '404未找到' } },
-  { path: '/login', component: _import('common/login'), name: 'login', meta: { title: '登录' } }
+  { path: '/login', component: _import('common/login'), name: 'login', meta: { title: '登录' } },
+  {
+    path: '/front/index',
+    component: _import('front/my-index'),
+    name: 'myIndex',
+    // eslint-disable-next-line standard/object-curly-even-spacing
+    meta: { title: '前台首页' },
+    children: [
+      { path: '/front/articles', component: _import('front/articles'), name: 'articles', meta: { title: '所有文章页' } },
+      { path: '/front/examTime', component: _import('front/exam-time'), name: 'examTime', meta: { title: '考试时间页' } },
+      { path: '/front/my', component: _import('front/profile'), name: 'profile', meta: { title: '个人主页' } },
+      { path: '/front/friend', component: _import('front/friend'), name: 'friend', meta: { title: '同学页' } },
+      { path: '/front/article', component: _import('front/article'), name: 'article', meta: { title: '文章页' } },
+      { path: '/front/video', component: _import('front/ktx-video'), name: 'ktxVideo', meta: { title: '视频页' } },
+      { path: '/front/notification', component: _import('front/notification'), name: 'notification', meta: { title: '消息通知页' } },
+      { path: '/front/questions', component: _import('front/questions'), name: 'questions', meta: { title: 'questions' } },
+      { path: '/front/question', component: _import('front/question'), name: 'question', meta: { title: 'question' } },
+      { path: '/front/publish', component: _import('front/publish'), name: 'publish', meta: { title: 'markdown页' } },
+      { path: '/front/task', component: _import('front/board'), name: 'board', meta: { title: '任务页' } },
+      { path: '/front/schoolMap', component: _import('front/school-map'), name: 'schoolMap', meta: { title: '地图页' } },
+      { path: '/front/myprofile', component: _import('front/profile'), name: 'profile', meta: { title: '个人页' } },
+      { path: '/front/attachment', component: _import('front/view-attachment'), name: 'attachment', meta: { title: '附件页' } },
+      { path: '/front/schoolTime', component: _import('front/school-time'), name: 'schoolTime', meta: { title: '作息事件页' } },
+      { path: '/front/score', component: _import('front/score'), name: 'score', meta: { title: '课程平时得分' } }
+    ]
+  }
 ]
 
 // 主入口路由(需嵌套上左右整体布局)
@@ -59,14 +84,24 @@ router.beforeEach((to, from, next) => {
   // 添加动态(菜单)路由
   // 1. 已经添加 or 全局路由, 直接访问
   // 2. 获取菜单列表, 添加并保存本地存储
-  if (router.options.isAddDynamicMenuRoutes || fnCurrentRouteType(to, globalRoutes) === 'global') {
-    next()
+  if (router.options.isAddDynamicMenuRoutes || fnCurrentRouteType(to, globalRoutes) === 'global') { 
+    if (to.path.startsWith('/front')) {
+      let token = Vue.cookie.get('token')
+      console.log('token:', token)
+      if (!token || !/\S/.test(token)) { 
+        clearLoginInfo()
+        return next({ name: 'login' })
+      }
+      next()
+    } else {
+      next()
+    }
   } else {
     http({
       url: http.adornUrl('/sys/menu/nav'),
       method: 'get',
       params: http.adornParams()
-    }).then(({data}) => {
+    }).then(({ data }) => {
       if (data && data.code === 0) {
         fnAddDynamicMenuRoutes(data.menuList)
         router.options.isAddDynamicMenuRoutes = true
@@ -106,7 +141,7 @@ function fnCurrentRouteType (route, globalRoutes = []) {
  * @param {*} menuList 菜单列表
  * @param {*} routes 递归创建的动态(菜单)路由
  */
-function fnAddDynamicMenuRoutes (menuList = [], routes = []) {
+function fnAddDynamicMenuRoutes(menuList = [], routes = []) {
   var temp = []
   for (var i = 0; i < menuList.length; i++) {
     if (menuList[i].list && menuList[i].list.length >= 1) {
@@ -133,7 +168,7 @@ function fnAddDynamicMenuRoutes (menuList = [], routes = []) {
       } else {
         try {
           route['component'] = _import(`modules/${menuList[i].url}`) || null
-        } catch (e) {}
+        } catch (e) { }
       }
       routes.push(route)
     }

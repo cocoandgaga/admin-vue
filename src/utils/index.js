@@ -5,7 +5,7 @@ import store from '@/store'
 /**
  * 获取uuid
  */
-export function getUUID () {
+export function getUUID() {
   return 'xxxxxxxx-xxxx-4xxx-yxxx-xxxxxxxxxxxx'.replace(/[xy]/g, c => {
     return (c === 'x' ? (Math.random() * 16 | 0) : ('r&0x3' | '0x8')).toString(16)
   })
@@ -15,7 +15,7 @@ export function getUUID () {
  * 是否有权限
  * @param {*} key
  */
-export function isAuth (key) {
+export function isAuth(key) {
   return JSON.parse(sessionStorage.getItem('permissions') || '[]').indexOf(key) !== -1 || false
 }
 
@@ -51,8 +51,23 @@ export function treeDataTranslate (data, id = 'id', pid = 'parentId') {
 /**
  * 清除登录信息
  */
-export function clearLoginInfo () {
+export function clearLoginInfo() {
   Vue.cookie.delete('token')
   store.commit('resetStore')
   router.options.isAddDynamicMenuRoutes = false
+}
+
+export function mydateformat(time) {
+  var date = new Date(time);
+  var year = date.getFullYear();
+  /* 在日期格式中，月份是从0开始的，因此要加0
+   * 使用三元表达式在小于10的前面加0，以达到格式统一  如 09:11:05
+   * */
+  var month = date.getMonth() + 1 < 10 ? "0" + (date.getMonth() + 1) : date.getMonth() + 1;
+  var day = date.getDate() < 10 ? "0" + date.getDate() : date.getDate();
+  var hours = date.getHours() < 10 ? "0" + date.getHours() : date.getHours();
+  var minutes = date.getMinutes() < 10 ? "0" + date.getMinutes() : date.getMinutes();
+  var seconds = date.getSeconds() < 10 ? "0" + date.getSeconds() : date.getSeconds();
+  // 拼接
+  return year + "-" + month + "-" + day + " " + hours + ":" + minutes + ":" + seconds;
 }

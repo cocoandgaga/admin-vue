@@ -21,7 +21,7 @@
         :key="item.name"
         :label="item.title"
         :name="item.name">
-        <el-card :body-style="siteContentViewHeight">
+        <el-card :body-style="siteContentViewHeight" class="mybg">
           <iframe
             v-if="item.type === 'iframe'"
             :src="item.iframeUrl"
@@ -124,4 +124,15 @@
     }
   }
 </script>
+
+<style scoped>
+.mybg{
+   background: rgba(0, 0, 0, 0) url("~@/assets/img/whitebg.jpg") no-repeat scroll
+    100% 100%;
+  background-size: auto;
+  background-size: cover;
+}
+</style>>
+
+</st>
 
